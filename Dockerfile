@@ -6,6 +6,9 @@ MAINTAINER Masashi Shinbara <shin1x1@gmail.com>
 RUN apt-get update && apt-get install -y \
       libicu-dev \
       libpq-dev \
+      git \
+      ssh \
+      rsync \
     && rm -r /var/lib/apt/lists/* \
     && docker-php-ext-install \
       intl \
@@ -19,6 +22,11 @@ RUN apt-get update && apt-get install -y \
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+
+# Install Deployer
+RUN curl -LO https://deployer.org/deployer.phar \
+    && mv deployer.phar /usr/bin/dep \
+    && chmod +x /usr/bin/dep
 
 # Put apache config for Laravel
 COPY apache2-laravel.conf /etc/apache2/sites-available/laravel.conf
